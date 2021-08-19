@@ -10,9 +10,43 @@ import chess.pieces.Rook;
 public class ChessMatch {
 
 	private Board board;
+	private int turn;
+	private Color currentPlayer;
+	private boolean check;
+	private boolean checkMate;
+	private ChessPiece enPassanVulnerable;
+	private ChessPiece promoted;
+	
+	
+
+	public int getTurn() {
+		return turn;
+	}
+
+	public Color getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public boolean isCheck() {
+		return check;
+	}
+
+	public boolean isCheckMate() {
+		return checkMate;
+	}
+
+	public ChessPiece getEnPassanVulnerable() {
+		return enPassanVulnerable;
+	}
+
+	public ChessPiece getPromoted() {
+		return promoted;
+	}
 
 	public ChessMatch() {
 		this.board = new Board(8, 8);
+		this.turn =1;
+		this.currentPlayer = Color.WHITE;
 		initialSetup();
 	}
 
@@ -34,8 +68,10 @@ public class ChessMatch {
 		Position source = sourcePosition.toPosition();
 		Position target = targetPosition.toPosition();
 		validateSourcePosition(source);
+		
 		validateTargetPosition(source, target);
 		Piece capturedPiece = makeMove(source,target);
+		nextTurn();
 		return (ChessPiece)capturedPiece;
 	}
 	
@@ -50,6 +86,9 @@ public class ChessMatch {
 		if (!board.thereIsAPiece(position)) {
 			throw new ChessException("Não há peça na posição indicada");
 		}
+		if (currentPlayer != ((ChessPiece)board.piece(position)).getColor()) {
+			throw new ChessException("Peça adversária");
+		}
 		if (!board.piece(position).isThereAnyPossibleMove()) {
 			throw new ChessException("Não há movimentos possíveis");
 		}
@@ -59,6 +98,11 @@ public class ChessMatch {
 		if (!board.piece(source).possibleMove(target)) {
 			throw new ChessException("Movimento ilegal");
 		}
+	}
+	
+	private void nextTurn() {
+		this.turn++;
+		this.currentPlayer = (currentPlayer == Color.WHITE ? Color.BLACK : Color.WHITE );
 	}
 	
 	public boolean[][] possibleMoves(ChessPosition sourcePosition){
