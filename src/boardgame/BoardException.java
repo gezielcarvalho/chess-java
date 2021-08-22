@@ -5,7 +5,6 @@ public class BoardException extends RuntimeException {
 
 	public BoardException(String msg) {
 		super(msg);
-		// TODO Auto-generated constructor stub
 	}
 
 }

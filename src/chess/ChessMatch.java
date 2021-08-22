@@ -84,13 +84,13 @@ public class ChessMatch {
 
 	private void validateSourcePosition(Position position) {
 		if (!board.thereIsAPiece(position)) {
-			throw new ChessException("N„o h· peÁa na posiÁ„o indicada");
+			throw new ChessException("N√£o h√° pe√ßa na posi√ß√£o indicada");
 		}
 		if (currentPlayer != ((ChessPiece)board.piece(position)).getColor()) {
-			throw new ChessException("PeÁa advers·ria");
+			throw new ChessException("Pe√ßa advers√°ria");
 		}
 		if (!board.piece(position).isThereAnyPossibleMove()) {
-			throw new ChessException("N„o h· movimentos possÌveis");
+			throw new ChessException("N√£o h√° movimentos poss√≠Sveis");
 		}
 	}
 	

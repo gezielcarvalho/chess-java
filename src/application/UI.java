@@ -74,7 +74,7 @@ public class UI {
 			return new ChessPosition(column, row);
 		}
 		catch (RuntimeException rte) {
-			throw new InputMismatchException("Entrada inv·lida (a1 - h8)");
+			throw new InputMismatchException("Entrada inv√°lida (a1 - h8)");
 		}
 		
 	}

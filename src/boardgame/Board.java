@@ -8,7 +8,7 @@ public class Board {
 	
 	public Board(int rows, int columns) {
 		if (rows < 1 || columns < 1) {
-			throw new BoardException("Tabuleiro inválido. Linha ou coluna menor que 1");
+			throw new BoardException("Tabuleiro invÃ¡lido. Linha ou coluna menor que 1");
 		}
 		this.rows = rows;
 		this.columns = columns;
@@ -17,13 +17,13 @@ public class Board {
 	
 	public Piece piece(int row, int col) {
 		if (!positionExists(row,col)) {
-			throw new BoardException("Posição inexistente");
+			throw new BoardException("PosiÃ§Ã£o inexistente");
 		}		return pieces[row][col];
 	}
 	
 	public Piece piece(Position position) {
 		if (!positionExists(position)) {
-			throw new BoardException("Posição inexistente");
+			throw new BoardException("PosiÃ§Ã£o inexistente");
 		}
 		return pieces[position.getRow()][position.getColumn()];
 	}
@@ -38,7 +38,7 @@ public class Board {
 	
 	public void placePiece(Piece piece, Position position) {
 		if (thereIsAPiece(position)) {
-			throw new BoardException("Posição ocupada:"+position);
+			throw new BoardException("PosiÃ§Ã£o ocupada:"+position);
 		}		
 		pieces[position.getRow()][position.getColumn()] = piece;
 		piece.position = position;
@@ -46,7 +46,7 @@ public class Board {
 	
 	public Piece removePiece(Position position) {
 		if (!positionExists(position)) {
-			throw new BoardException("Posição inexistente!");
+			throw new BoardException("PosiÃ§Ã£o inexistente!");
 		}
 		if (piece(position)==null) {
 			return null;
@@ -67,7 +67,7 @@ public class Board {
 		
 	public boolean thereIsAPiece(Position position) {
 		if (!positionExists(position)) {
-			throw new BoardException("Posição inexistente");
+			throw new BoardException("PosiÃ§Ã£o inexistente");
 		}		
 		return piece(position) != null;
 	}

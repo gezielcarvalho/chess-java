@@ -18,7 +18,7 @@ public abstract class Piece {
 	
 	public boolean possibleMove(Position position) {
 		return possibleMoves()[position.getRow()][position.getColumn()];
-		// hook method. Método concreto chamando o abstrato
+		// hook method. MÃ©todo concreto chamando o abstrato
 	}
 	
 	public boolean isThereAnyPossibleMove() {
