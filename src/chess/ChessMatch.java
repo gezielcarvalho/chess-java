@@ -162,11 +162,11 @@ public class ChessMatch {
 	private Piece makeMove(Position source, Position target) {
 		Piece p = board.removePiece(source);
 		((ChessPiece)p).increaseMoveCount();
-		Piece capturedPeice = board.removePiece(target);
+		Piece capturedPiece = board.removePiece(target);
 		board.placePiece(p, target);
-		if (capturedPeice != null) {
-			capturedPieces.add(capturedPeice);
-			piecesOnTheBoard.remove(capturedPeice);
+		if (capturedPiece != null) {
+			capturedPieces.add(capturedPiece);
+			piecesOnTheBoard.remove(capturedPiece);
 		}
 		
 		// #specialmove castling kingside mrook
@@ -191,7 +191,24 @@ public class ChessMatch {
 			rook.increaseMoveCount();
 		}
 		
-		return capturedPeice;
+		// #specialmove ckeck if en passant
+		if (p instanceof Pawn) {
+			if(source.getColumn()!= target.getColumn() && capturedPiece == null) {
+				Position pawnPosition;
+				if(((Pawn) p).getColor() == Color.WHITE) {
+					pawnPosition = new Position(target.getRow() + 1, target.getColumn());
+				}
+				else {
+					pawnPosition = new Position(target.getRow() - 1, target.getColumn());
+				}
+				capturedPiece = board.removePiece(pawnPosition);
+				capturedPieces.add(capturedPiece);
+				piecesOnTheBoard.remove(capturedPiece);
+			}
+		}
+		
+		
+		return capturedPiece;
 	}
 	
 	private void undoMove(Position source, Position target, Piece capturedPiece) {
@@ -224,7 +241,23 @@ public class ChessMatch {
 			ChessPiece rook = (ChessPiece)board.removePiece(targetT);
 			board.placePiece(rook, sourceT);
 			rook.decreaseMoveCount();
-		}		
+		}	
+		
+		// #specialmove ckeck if en passant
+		if (p instanceof Pawn) {
+			if(source.getColumn()!= target.getColumn() && capturedPiece == enPassanVulnerable) {
+				ChessPiece pawn = (ChessPiece)board.removePiece(target);
+				Position pawnPosition;
+				if(((Pawn) p).getColor() == Color.WHITE) {
+					pawnPosition = new Position(3, target.getColumn());
+				}
+				else {
+					pawnPosition = new Position(4, target.getColumn());
+				}
+				board.placePiece(pawn, pawnPosition);				
+				capturedPiece = board.removePiece(pawnPosition);
+			}
+		}
 		
 	}
 
