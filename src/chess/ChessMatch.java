@@ -139,6 +139,21 @@ public class ChessMatch {
 
 		ChessPiece movedPiece = (ChessPiece)board.piece(target);
 		
+		//check promotion before testing check
+		// #specialmove promotion
+		promoted = null;
+		if (movedPiece instanceof Pawn) {
+			if ((movedPiece.getColor() == Color.WHITE && target.getRow() == 0) 
+					|| 
+				(movedPiece.getColor() == Color.BLACK && target.getRow() == 7))  
+			{
+				promoted = (ChessPiece)board.piece(target);
+				promoted = replacePromotedPiece("Q");
+				
+			}
+		}
+		
+		
 		check = testCheck(opponent(currentPlayer));
 		
 		if (testCheckMate(opponent(currentPlayer))) {
@@ -290,8 +305,35 @@ public class ChessMatch {
 		return board.piece(position).possibleMoves();
 	}
 	
-	public ChessPiece replacePromtedPiece(String type) {
-		return null;
+	public ChessPiece replacePromotedPiece(String type) {
+		if (promoted == null) {
+			throw new IllegalStateException("Não há peça a promover!");
+		}
+		if(!type.equals("B") && !type.equals("N") && !type.equals("R") && !type.equals("Q")) {
+			throw new IllegalStateException("Peça não pode ser promovida!");
+		}
+		Position pos = promoted.getChessPosition().toPosition();
+		Piece p = board.removePiece(pos);
+		piecesOnTheBoard.remove(p);
+		
+		ChessPiece newPiece = newPiece(type, promoted.getColor());
+		board.placePiece(newPiece, pos);
+		piecesOnTheBoard.add(newPiece);
+		
+		return newPiece;
+	}
+	
+	private ChessPiece newPiece(String type, Color color) {
+		switch(type) {
+		case "B":
+			return new Bishop(board,color);
+		case "N":
+			return new Knight(board,color);
+		case "R":
+			return new Rook(board,color);		
+		default:
+			return new Queen(board,color);
+		}
 	}
 	
 	private void initialSetup() {
